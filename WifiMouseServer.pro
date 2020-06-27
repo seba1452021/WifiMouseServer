@@ -38,8 +38,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    fixedsvgwidget.cpp \
-    rotatingsquare.cpp \
     networkthread.cpp \
     runguard.cpp \
     setpassworddialog.cpp \
@@ -51,8 +49,6 @@ SOURCES += main.cpp\
     helpipdialog.cpp
 
 HEADERS  += mainwindow.h \
-    fixedsvgwidget.h \
-    rotatingsquare.h \
     networkthread.h \
     runguard.h \
     setpassworddialog.h \

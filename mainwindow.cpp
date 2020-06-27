@@ -28,22 +28,17 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowFlags(Qt::Dialog);
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
-    rotatingSquare = new RotatingSquare(0, 0, 0, this->width()/7, 35, 35, 35);
-    loadSvgs();
-    startSvgAnimation();
-
     updateServerIp();
 
     createActions();
     createTrayIcon();
 
-    if(ui->startMinimizedCheck->isChecked() == false)
-        this->show();
+    //if(ui->startMinimizedCheck->isChecked() == false)
+    //    this->show();
 }
 
 MainWindow::~MainWindow()
 {
-    delete rotatingSquare;
     delete ui;
     delete programIcon;
 }
@@ -86,78 +81,20 @@ void MainWindow::setClientIp(QString ip)
 {
     clientIpAction->setText(ip);
 
-    if(ip == "Not connected" && statusWidget->getRenderer() == connectedSvg)
-        statusWidget->setRenderer(listening1Svg);
-    else if(ip != "Not connected")
-        statusWidget->setRenderer(connectedSvg);
+    if(ip == "Not connected")
+        ui->clientInfoLabel->setText("Listening for clients");
+    else
+        ui->clientInfoLabel->setText("Client connected: ");
 }
 
 void MainWindow::updateServerIp()
 {
     foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
-        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
             ui->serverIpLabel->setText("Server IP: "+address.toString());
+            return;
+        }
     }
-}
-
-void MainWindow::paintEvent(QPaintEvent *event)
-{
-    QPainter p(this);
-    p.translate(rotatingSquare->x, rotatingSquare->y);
-    p.rotate(rotatingSquare->rotation);
-    logoSvg->render(&p, QRectF(rotatingSquare->size/-2,rotatingSquare->size/-2,rotatingSquare->size,rotatingSquare->size));
-}
-
-void MainWindow::loadSvgs()
-{
-    listening1Svg = new QSvgRenderer(this); listening1Svg->load((QString)":/images/listening1.svg");
-    listening2Svg = new QSvgRenderer(this); listening2Svg->load((QString)":/images/listening2.svg");
-    listening3Svg = new QSvgRenderer(this); listening3Svg->load((QString)":/images/listening3.svg");
-    logoSvg = new QSvgRenderer(this); logoSvg->load((QString)":/images/logo.svg");
-    connectedSvg = new QSvgRenderer(this); connectedSvg->load((QString)":/images/connected.svg");
-    statusWidget = new FixedSvgWidget(this);
-    statusWidget->setRenderer(listening3Svg);
-
-    statusWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    ui->statusLayout->addWidget(statusWidget);
-}
-
-void MainWindow::updateListeningAnimation()
-{
-    if(this->isVisible() == false)
-        return;
-
-    if(statusWidget->getRenderer() == listening1Svg)
-        statusWidget->setRenderer(listening2Svg);
-    else if(statusWidget->getRenderer() == listening2Svg)
-        statusWidget->setRenderer(listening3Svg);
-    else if(statusWidget->getRenderer() == listening3Svg)
-        statusWidget->setRenderer(listening1Svg);
-
-    statusWidget->repaint();
-
-    updateServerIp();
-}
-
-void MainWindow::updateLogoAnimation()
-{
-    if(this->isVisible() == false)
-        return;
-
-    rotatingSquare->update(this->width(), this->height());
-    this->repaint();
-}
-
-void MainWindow::startSvgAnimation()
-{
-    QTimer *listeningTimer = new QTimer(this);
-    connect(listeningTimer, SIGNAL(timeout()), this, SLOT(updateListeningAnimation()));
-    listeningTimer->start(1500);
-
-    QTimer *logoTimer = new QTimer(this);
-    connect(logoTimer, SIGNAL(timeout()), this, SLOT(updateLogoAnimation()));
-    logoTimer->start(15);
 }
 
 void MainWindow::clickMaximized()

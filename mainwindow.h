@@ -5,8 +5,6 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QAction>
-#include "fixedsvgwidget.h"
-#include "rotatingsquare.h"
 #include "setpassworddialog.h"
 #include "helpipdialog.h"
 
@@ -23,7 +21,6 @@ public:
     ~MainWindow();
 
     void closeEvent(QCloseEvent *event);
-    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::MainWindow *ui;
@@ -34,18 +31,6 @@ private:
     QByteArray serverPassword;
 
     void updateServerIp();
-
-    void loadSvgs();
-    void startSvgAnimation();
-    FixedSvgWidget *logoWidget;
-    FixedSvgWidget *statusWidget;
-    QSvgRenderer *listening1Svg;
-    QSvgRenderer *listening2Svg;
-    QSvgRenderer *listening3Svg;
-    QSvgRenderer *connectedSvg;
-    QSvgRenderer *logoSvg;
-
-    RotatingSquare *rotatingSquare;
 
     void createTrayIcon();
     QSystemTrayIcon *trayIcon;
@@ -59,8 +44,6 @@ private:
     QAction *clientIpAction;
 
 public Q_SLOTS:
-    void updateListeningAnimation();
-    void updateLogoAnimation();
     void clickMaximized();
     void clickMinimized();
     void clickQuit();

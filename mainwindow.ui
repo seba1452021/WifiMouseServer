@@ -78,7 +78,25 @@
     <item>
      <layout class="QVBoxLayout" name="topVerticalLayout">
       <item>
-       <layout class="QVBoxLayout" name="statusLayout"/>
+       <layout class="QVBoxLayout" name="statusLayout">
+        <item>
+         <widget class="QLabel" name="clientInfoLabel">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Listening for clients</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
