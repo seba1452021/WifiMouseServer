@@ -2,6 +2,7 @@
 #include "networkthread.h"
 #include "runguard.h"
 #include <QApplication>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QMessageBox>
 
@@ -16,6 +17,9 @@ int main(int argc, char *argv[])
         error.exec();
         return 0;
     }
+
+    QCoreApplication::setOrganizationName("WifiMouseAuthors");
+    QCoreApplication::setApplicationName("WifiMouseServer");
 
     MainWindow w;
     NetworkThread networkThread;

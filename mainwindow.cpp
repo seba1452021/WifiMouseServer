@@ -33,8 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createTrayIcon();
 
-    //if(ui->startMinimizedCheck->isChecked() == false)
-    //    this->show();
+    if(ui->startMinimizedCheck->isChecked() == false)
+        this->show();
 }
 
 MainWindow::~MainWindow()
@@ -51,16 +51,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadSettings()
 {
-    QSettings settings("WifiMouse", QSettings::NativeFormat);
+    QSettings settings;
     serverPassword = settings.value("pass","").toByteArray();
     if(serverPassword.length() != 16)
         serverPassword = EncryptUtils::makeHash16("");
-    ui->startMinimizedCheck->setChecked( settings.value("startMinimized", false).toBool() );
+    ui->startMinimizedCheck->setChecked( settings.value("startMinimized", true).toBool() );
 }
 
 void MainWindow::saveSettings()
 {
-    QSettings settings("WifiMouse", QSettings::NativeFormat);
+    QSettings settings;
     settings.setValue("pass", serverPassword);
     settings.setValue("startMinimized", ui->startMinimizedCheck->isChecked());
 }
