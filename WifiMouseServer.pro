@@ -4,17 +4,24 @@
 #
 #-------------------------------------------------
 
+VERSION = 1.1
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+QMAKE_TARGET_COMPANY = WifiMouseServer Authors
+QMAKE_TARGET_PRODUCT = WifiMouseServer
+QMAKE_TARGET_DESCRIPTION = Desktop companion app for WifiMouse on Android
+QMAKE_TARGET_COPYRIGHT = (C)2020 WifiMouseServer Authors
+
 QT       += core gui widgets
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
-QT += svg
 QT += network
 QT += bluetooth
 
 win32 {
     SOURCES += fakeinput-windows.cpp
     LIBS += -luser32 -lpdh
+    RC_ICONS = win_icon.ico
 }
 macx {
     LIBS += -framework ApplicationServices

@@ -91,8 +91,9 @@ void MainWindow::setClientIp(QString ip)
                 ui->clientInfoLabel->setText("Listening for clients");
            else
                 ui->clientInfoLabel->setText("Server Disabled");
-        } else
+        } else {
             ui->clientInfoLabel->setText("Client: "+ip);
+        }
     }
 }
 
@@ -164,8 +165,9 @@ void MainWindow::createTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setIcon(*programIcon);
-    trayIcon->setToolTip("WifiMouseServer");
+    trayIcon->setToolTip("WifiMouseServer v" + QString(APP_VERSION) );
     trayIcon->show();
+
 
     trayIconMenu = new QMenu(this);
     trayIconMenu->addSeparator();

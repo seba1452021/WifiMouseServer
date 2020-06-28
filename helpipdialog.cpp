@@ -10,6 +10,7 @@ HelpIpDialog::HelpIpDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
+    setWindowTitle( QString("WifiMouseServer v%1").arg(APP_VERSION) );
 }
 
 HelpIpDialog::~HelpIpDialog()

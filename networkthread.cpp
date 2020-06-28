@@ -29,10 +29,11 @@ void NetworkThread::run()
 
    FakeInput::initFakeInput();
 
-   int count = 0;
+   qInfo() << "Server started";
+
    while(!isInterruptionRequested()) {
        updateClientIp("Not connected");
-       qInfo() << "Listening for connection... " << ++count;
+
        server.listenWithTimeout(1000);
 
        AbstractedSocket *socket = server.nextPendingConnection();
@@ -42,7 +43,7 @@ void NetworkThread::run()
        if( verifyClient(socket) ) {
            updateClientIp(server.pendingSocketInfo);
 
-           qInfo() << "Client verified\n";
+           qInfo() << "Client verified";
            startInputLoop(socket);
        }
        else
