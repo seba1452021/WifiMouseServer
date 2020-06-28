@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 VERSION = 1.1
+
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 QMAKE_TARGET_COMPANY = WifiMouseServer Authors
 QMAKE_TARGET_PRODUCT = WifiMouseServer
