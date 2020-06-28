@@ -12,9 +12,10 @@ int main(int argc, char *argv[])
 
     RunGuard guard("WifiMouseServer");
     if( !guard.tryToRun() ) {
-        QMessageBox error;
-        error.setText("Another instance of WifiMouseServer is already running.");
-        error.exec();
+        // QMessageBox error;
+        // error.setText("Another instance of WifiMouseServer is already running.");
+        // error.exec();
+        qInfo() << "Another instance of WifiMouseServer is already running.";
         return 0;
     }
 
