@@ -36,10 +36,14 @@ private:
 
     QIODevice *pendingSocket;
 
+    bool tcpEnabled;
+    bool bluetoothEnabled;
+
 public slots:
     void newTcpConnection();
     void newBluetoothConnection();
     void timeout();
+    void refreshConfig();
 
 signals:
     void newConnection();

@@ -6,6 +6,7 @@
 #include "encryptutils.h"
 #include "fileutils.h"
 #include <QDebug>
+#include <QObject>
 #include <QDateTime>
 #include <QAbstractSocket>
 #include <QHostInfo>
@@ -23,6 +24,8 @@ QString serverVersion = "2";
 void NetworkThread::run()
 {
    AbstractedServer server;
+
+   QObject::connect(mainWindow, SIGNAL(configChanged()), &server, SLOT(refreshConfig()));
 
    FakeInput::initFakeInput();
 

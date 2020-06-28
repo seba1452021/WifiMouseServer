@@ -29,6 +29,7 @@ private:
     HelpIpDialog *helpIpDialog;
 
     QByteArray serverPassword;
+    QString lastClient;
 
     void updateServerIp();
 
@@ -40,8 +41,6 @@ private:
     QAction *quitAction;
     QAction *maximizeAction;
     QAction *passwordAction;
-    QAction *clientTitleAction;
-    QAction *clientIpAction;
 
 public Q_SLOTS:
     void clickMaximized();
@@ -56,6 +55,9 @@ public Q_SLOTS:
 
     void loadSettings();
     void saveSettings();
+
+Q_SIGNALS:
+    void configChanged();
 };
 
 #endif // MAINWINDOW_H

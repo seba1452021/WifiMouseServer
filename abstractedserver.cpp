@@ -4,6 +4,7 @@
 #include <QBluetoothSocket>
 #include <QTcpSocket>
 #include <QThread>
+#include <QSettings>
 #include "fakeinput.h"
 
 AbstractedServer::AbstractedServer()
@@ -21,6 +22,7 @@ AbstractedServer::AbstractedServer()
     QObject::connect(&timeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
     timeoutTimer.setSingleShot(true);
+    refreshConfig();
     trySetupServers();
 }
 
@@ -158,6 +160,16 @@ void AbstractedServer::listenWithTimeout(qint16 timeoutMs)
 void AbstractedServer::trySetupServers()
 {
     // these can be recalled if initial setup failed
-    bluetoothServerListen();
-    tcpServerListen();
+    if (bluetoothEnabled)
+        bluetoothServerListen();
+    if (tcpEnabled)
+        tcpServerListen();
+}
+
+void AbstractedServer::refreshConfig()
+{
+QSettings settings;
+
+    tcpEnabled = settings.value("tcpServerEnabled",true).toBool();
+    bluetoothEnabled = settings.value("bluetoothServerEnabled",true).toBool();
 }

@@ -56,6 +56,8 @@ void MainWindow::loadSettings()
     if(serverPassword.length() != 16)
         serverPassword = EncryptUtils::makeHash16("");
     ui->startMinimizedCheck->setChecked( settings.value("startMinimized", true).toBool() );
+    ui->tcpEnabledCheck->setChecked( settings.value("tcpServerEnabled", true).toBool() );
+    ui->bluetoothEnabledCheck->setChecked( settings.value("bluetoothServerEnabled", true).toBool() );
 }
 
 void MainWindow::saveSettings()
@@ -63,6 +65,9 @@ void MainWindow::saveSettings()
     QSettings settings;
     settings.setValue("pass", serverPassword);
     settings.setValue("startMinimized", ui->startMinimizedCheck->isChecked());
+    settings.setValue("tcpServerEnabled", ui->tcpEnabledCheck->isChecked());
+    settings.setValue("bluetoothServerEnabled", ui->bluetoothEnabledCheck->isChecked());
+    emit configChanged();
 }
 
 QByteArray MainWindow::getPassword()
@@ -79,19 +84,23 @@ void MainWindow::setPassword(QString newPassword)
 
 void MainWindow::setClientIp(QString ip)
 {
-    clientIpAction->setText(ip);
-
-    if(ip == "Not connected")
-        ui->clientInfoLabel->setText("Listening for clients");
-    else
-        ui->clientInfoLabel->setText("Client connected: ");
+    if (ip != lastClient ) {
+        lastClient = ip;
+        if(ip == "Not connected") {
+            if ( ui->tcpEnabledCheck->isChecked() || ui->bluetoothEnabledCheck->isChecked() )
+                ui->clientInfoLabel->setText("Listening for clients");
+           else
+                ui->clientInfoLabel->setText("Server Disabled");
+        } else
+            ui->clientInfoLabel->setText("Client: "+ip);
+    }
 }
 
 void MainWindow::updateServerIp()
 {
     foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
         if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
-            ui->serverIpLabel->setText("Server IP: "+address.toString());
+            setWindowTitle( QString("WifiMouseServer: %1").arg(address.toString()) );
             return;
         }
     }
@@ -130,7 +139,7 @@ void MainWindow::createActions()
     connect(quitAction, SIGNAL(triggered()), this, SLOT(clickQuit()));
     connect(ui->minimizeButton, SIGNAL(released()), this, SLOT(clickMinimized()));
 
-    maximizeAction = new QAction(tr("Maximize"),this);
+    maximizeAction = new QAction(tr("Display"),this);
     connect(maximizeAction, SIGNAL(triggered()), this, SLOT(clickMaximized()));
 
     passwordAction = new QAction(tr("Set password"),this);
@@ -139,25 +148,23 @@ void MainWindow::createActions()
 
     connect(ui->startMinimizedCheck, SIGNAL(released()), this, SLOT(saveSettings()));
 
-    connect(ui->helpButton, SIGNAL(released()), this, SLOT(clickIpHelper()));
+    connect(ui->tcpEnabledCheck, SIGNAL(released()), this, SLOT(saveSettings()));
+    connect(ui->bluetoothEnabledCheck, SIGNAL(released()), this, SLOT(saveSettings()));
 
-    clientTitleAction = new QAction("Client IP", this);
-    clientTitleAction->setEnabled(false);
-    clientIpAction = new QAction("Not connected", this);
+    connect(ui->helpButton, SIGNAL(released()), this, SLOT(clickIpHelper()));
 }
 
 void MainWindow::createTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setIcon(*programIcon);
+    trayIcon->setToolTip("WifiMouseServer");
     trayIcon->show();
 
     trayIconMenu = new QMenu(this);
-    trayIconMenu->addAction(clientTitleAction);
-    trayIconMenu->addAction(clientIpAction);
     trayIconMenu->addSeparator();
-    trayIconMenu->addAction(passwordAction);
     trayIconMenu->addAction(maximizeAction);
+    trayIconMenu->addAction(passwordAction);
     trayIconMenu->addAction(quitAction);
     trayIcon->setContextMenu(trayIconMenu);
 }
