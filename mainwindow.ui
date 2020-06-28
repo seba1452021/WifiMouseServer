@@ -58,7 +58,7 @@
     <item>
      <widget class="QCheckBox" name="bluetoothEnabledCheck">
       <property name="text">
-       <string>Bluetoot Server Enabled</string>
+       <string>Bluetooth Server Enabled</string>
       </property>
      </widget>
     </item>

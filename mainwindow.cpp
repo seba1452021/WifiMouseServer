@@ -154,6 +154,12 @@ void MainWindow::createActions()
     connect(ui->helpButton, SIGNAL(released()), this, SLOT(clickIpHelper()));
 }
 
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+  if (reason == QSystemTrayIcon::Trigger)
+    clickMaximized();
+}
+
 void MainWindow::createTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
@@ -167,4 +173,6 @@ void MainWindow::createTrayIcon()
     trayIconMenu->addAction(passwordAction);
     trayIconMenu->addAction(quitAction);
     trayIcon->setContextMenu(trayIconMenu);
+
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
 }

@@ -56,6 +56,8 @@ public Q_SLOTS:
     void loadSettings();
     void saveSettings();
 
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+
 Q_SIGNALS:
     void configChanged();
 };
