@@ -4,3 +4,5 @@
 | Compilacion y empaquetado para debian. (utilice root) |
 |                                                       |
 --------------------------------------------------------
+
+Aviso: se implemento Debian 11 (bullseye) como el sistema anfitrion para la compilacion e distribucion en la paqueteria correspondiente.
