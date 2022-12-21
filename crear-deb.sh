@@ -37,7 +37,7 @@
   source_code="https://github.com/michaelnpsp/WifiMouseServer";
   echo; git clone $source_code; echo;
 
-  wget -q -c https://github.com/seba1452021/WifiMouseServer/blob/e70da28692d72d9de8d32ae45a2a239e0f598138/logo.png -O WifiMouseServer/images/icon64.png;
+  wget -q -c https://github.com/seba1452021/WifiMouseServer/blob/master/logo.png -O WifiMouseServer/images/icon64.png;
   
   
   cd WifiMouseServer;
